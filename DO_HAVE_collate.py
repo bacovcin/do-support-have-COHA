@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     outfile = open('coha_dohave.txt', 'w')
 
-    outfile.write('id\tstartnum\tendnum\tdosupport\tauthor\tgenre\tyear\n')
+    outfile.write('id\tstartnum\tendnum\tdosupport\tgenre\tyear\n')
 
     for f in files:
         print(f)
