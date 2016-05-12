@@ -44,7 +44,7 @@ outputs the data to `*`:
     python3 DO_HAVE_collate.py
 
 
-As a point of reference, `make.sh` takes less than two minutes to run on a laptop:
+As a point of reference, `make.sh` takes about a half hour to run on a desktop running other application:
 
     time python3 DO_HAVE_collate.py
 
