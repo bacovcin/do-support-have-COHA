@@ -36,7 +36,7 @@ To run the code either download the files as a [ZIP](https://github.com/christop
 
 Change directories to the cloned repository. Copy (or create symbolic links) to all of the zip files in the Word_lemma_PoS subdirectory of [the full text COHA corpus](http://corpus.byu.edu/full-text/intro.asp):
 
-    ln -s <directory containing COHA downloads>/Word_lemma_PoS corpus
+    ln -s <directory containing COHA downloads>/Word_lemma_PoS/*.zip .
 
 Once you've structured the repository with the correct symbolic links, run the make script, which
 outputs the data to `*`:
@@ -44,7 +44,7 @@ outputs the data to `*`:
     python3 DO_HAVE_collate.py
 
 
-As a point of reference, `make.sh` takes about a half hour to run on a desktop running other application:
+As a point of reference, `make.sh` takes about 50min to run on a desktop running other application:
 
     time python3 DO_HAVE_collate.py
 

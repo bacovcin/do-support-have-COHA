@@ -4,25 +4,15 @@ import zipfile
 
 
 def find_metadata(zf, name):
-    print(name)
-    idt = name.split('.')[0].split('_')[2]
-    if idt not in texts.keys():
-        return 0
-    cur_text = texts[idt]
     cur_file = zf.open(name)
-    try:
-        cur_title = cur_text['title']
-    except:
-        cur_title = ''
-    try:
-        cur_author = cur_text['author']
-    except:
-        cur_author = ''
-    return idt, cur_text, cur_file, cur_title, cur_author
+    cur_genre = name.split('.')[0].split('_')[0]
+    cur_year = name.split('.')[0].split('_')[1]
+    cur_idt = name.split('.')[0].split('_')[2]
+    return (cur_file, cur_genre, cur_year, cur_idt)
 
 
 def search_file(outfile, name, zf, response):
-    idt, cur_text, cur_file, cur_title, cur_author = response
+    cur_file, cur_genre, cur_year, cur_idt = response
     startword = 0
     curword = 0
     do_word = -1
@@ -40,7 +30,7 @@ def search_file(outfile, name, zf, response):
         try:
             if ((s[1] in ['.', '?', '!']) or (s[0] == '@' and s[2] == 'ii')):
                 if is_do_support != 'NA':
-                    outfile.write(str(idt) +
+                    outfile.write(str(cur_idt) +
                                   '\t' +
                                   str(startword) +
                                   '\t' +
@@ -48,13 +38,9 @@ def search_file(outfile, name, zf, response):
                                   '\t' +
                                   is_do_support +
                                   '\t' +
-                                  cur_title +
+                                  cur_genre +
                                   '\t' +
-                                  cur_author +
-                                  '\t' +
-                                  cur_text['genre'] +
-                                  '\t' +
-                                  cur_text['year'] +
+                                  cur_year +
                                   '\n')
                 startword = curword + 1
                 do_word = -1
@@ -99,27 +85,15 @@ def search_file(outfile, name, zf, response):
 if __name__ == "__main__":
     files = [x for x in os.listdir('.') if path.isfile('.'+os.sep+x)]
 
-    infile = open('sources_coha.txt')
-    names = infile.readline().rstrip().split('\t')
-
-    texts = {}
-
-    for line in infile:
-        s = line.rstrip().split('\t')
-        texts[s[0]] = {}
-        for n in range(1, len(s)-1, 1):
-            texts[s[0]][names[n]] = s[n]
-
     outfile = open('coha_dohave.txt', 'w')
 
     outfile.write('id\tstartnum\tendnum\tdosupport\tauthor\tgenre\tyear\n')
 
     for f in files:
+        print(f)
         if zipfile.is_zipfile(f):
             zf = zipfile.ZipFile(f)
             zf_names = zf.namelist()
             for name in zf_names:
                 response = find_metadata(zf, name)
-                if response == 0:
-                    continue
                 search_file(outfile, name, zf, response)
